@@ -1,0 +1,19 @@
+name: 'Docker Hub Login'
+description: 'Log in to Docker Hub using account secrets'
+
+inputs:
+  dockerhub-username:
+    description: 'Docker Hub username'
+    required: true
+  dockerhub-token:
+    description: 'Docker Hub access token'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ inputs.dockerhub-username }}
+        password: ${{ inputs.dockerhub-token }}
