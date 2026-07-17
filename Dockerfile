@@ -1,17 +1,11 @@
-# ---- deps stage: install dependencies ----
-FROM node:20-alpine AS deps
-WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm install --omit=dev
-
-# ---- runtime stage ----
-FROM node:20-alpine AS runtime
+FROM node:20-alpine
 ENV NODE_ENV=production
 WORKDIR /app
 
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
-COPY --from=deps /app/node_modules ./node_modules
+# node_modules is installed by the "test" job and restored from cache
+# by "build-and-push" before this build runs — not installed here.
 COPY --chown=appuser:appgroup . .
 
 USER appuser
