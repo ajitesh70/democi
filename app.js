@@ -10,6 +10,10 @@ app.get('/health', (req, res) => {
   res.status(200).send('ok');
 });
 
-app.listen(port, () => {
-  console.log(`democi listening on port ${port}`);
-});
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`democi listening on port ${port}`);
+  });
+}
+
+module.exports = app;
